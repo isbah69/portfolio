@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface Project {
   id: number;
   title: string;
@@ -6,6 +8,8 @@ export interface Project {
   imageUrl: string;
   link?: string;
   github?: string;
+  stars?: number;
+  forks?: number;
 }
 
 export interface Skill {

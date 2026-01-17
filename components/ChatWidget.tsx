@@ -1,8 +1,13 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatMessage } from '../types';
 import { sendMessageToGemini } from '../services/geminiService';
+
+// Use any to bypass motion component type errors in this environment
+const MotionDiv = motion.div as any;
+const MotionButton = motion.button as any;
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +47,7 @@ const ChatWidget: React.FC = () => {
   return (
     <>
       {/* FAB */}
-      <motion.button
+      <MotionButton
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.1 }}
@@ -50,12 +55,12 @@ const ChatWidget: React.FC = () => {
         onClick={() => setIsOpen(true)}
       >
         <MessageSquare size={24} />
-      </motion.button>
+      </MotionButton>
 
       {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
@@ -69,7 +74,7 @@ const ChatWidget: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="font-bold text-slate-100">AI Assistant</h3>
-                    <p className="text-xs text-slate-400">Powered by Gemini 2.5</p>
+                    <p className="text-xs text-slate-400">Powered by Gemini 3</p>
                 </div>
               </div>
               <button 
@@ -130,7 +135,7 @@ const ChatWidget: React.FC = () => {
                 </button>
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </>

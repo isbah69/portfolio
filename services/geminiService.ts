@@ -1,16 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { ChatMessage } from "../types";
 
-// Helper to get the AI client
-const getAiClient = () => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    console.error("API Key is missing. Chat functionality will be limited.");
-    return null;
-  }
-  return new GoogleGenAI({ apiKey });
-};
-
 // System instruction to give the AI context about Isbah
 const SYSTEM_INSTRUCTION = `
 You are an AI assistant for Isbah Mehmood's personal portfolio website.
@@ -36,24 +26,35 @@ export const sendMessageToGemini = async (
   history: ChatMessage[],
   newMessage: string
 ): Promise<string> => {
-  const ai = getAiClient();
-  if (!ai) {
-    return "I'm sorry, I cannot connect to the server right now. Please try again later.";
-  }
+  // Always create a new GoogleGenAI instance right before making an API call
+  // using process.env.API_KEY directly as per guidelines.
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
-    // Constructing a prompt that includes history for context
-    const conversationHistory = history
-      .map((msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.text}`)
-      .join('\n');
-      
-    const fullPrompt = `${SYSTEM_INSTRUCTION}\n\nConversation History:\n${conversationHistory}\n\nUser: ${newMessage}\nAssistant:`;
+    // Map history messages to the format expected by the Gemini API.
+    // 'role' must be 'user' or 'model'.
+    const contents = history.map((msg) => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.text }],
+    }));
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: fullPrompt,
+    // Append the current message from the user.
+    contents.push({
+      role: 'user',
+      parts: [{ text: newMessage }],
     });
 
+    // Use 'gemini-3-flash-preview' for basic text tasks.
+    // Provide system instructions via the config object.
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: contents,
+      config: {
+        systemInstruction: SYSTEM_INSTRUCTION,
+      },
+    });
+
+    // Extract the text content from the response using the .text property.
     return response.text || "I didn't get a response. Please try again.";
   } catch (error) {
     console.error("Gemini API Error:", error);

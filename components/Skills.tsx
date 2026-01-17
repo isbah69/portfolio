@@ -1,6 +1,10 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
+
+// Use any to bypass motion component type errors in this environment
+const MotionDiv = motion.div as any;
 
 const data = [
   { name: 'React', level: 90, color: '#06b6d4' },
@@ -25,7 +29,7 @@ const Skills: React.FC = () => {
 
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Chart */}
-          <motion.div 
+          <MotionDiv 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -46,7 +50,7 @@ const Skills: React.FC = () => {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </motion.div>
+          </MotionDiv>
 
           {/* Text List */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -74,7 +78,7 @@ const Skills: React.FC = () => {
 };
 
 const SkillCategory: React.FC<{ title: string; skills: string[] }> = ({ title, skills }) => (
-  <motion.div 
+  <MotionDiv 
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -89,7 +93,7 @@ const SkillCategory: React.FC<{ title: string; skills: string[] }> = ({ title, s
         </li>
       ))}
     </ul>
-  </motion.div>
+  </MotionDiv>
 );
 
 export default Skills;

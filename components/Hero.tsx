@@ -1,6 +1,10 @@
+
 import React from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+// Use any to bypass motion component type errors in this environment
+const MotionDiv = motion.div as any;
 
 const Hero: React.FC = () => {
   return (
@@ -13,7 +17,7 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
@@ -34,7 +38,7 @@ const Hero: React.FC = () => {
 
           <div className="flex flex-wrap gap-4 pt-4">
             <a
-              href="#projects"
+              href="#about"
               className="px-8 py-3 bg-accent hover:bg-accentHover text-white rounded-full font-semibold transition-all shadow-lg shadow-accent/25 flex items-center gap-2 group"
             >
               View My Work
@@ -54,23 +58,29 @@ const Hero: React.FC = () => {
             <SocialLink href="mailto:i696982172@gmail.com" icon={<Mail size={24} />} label="Email" />
             <SocialLink href="tel:03297376890" icon={<Phone size={24} />} label="Call" />
           </div>
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative hidden md:block"
         >
-          <div className="relative w-80 h-80 md:w-96 md:h-96 mx-auto">
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent to-purple-600 rounded-full blur-2xl opacity-50 animate-pulse"></div>
-            <img
-              src="https://picsum.photos/400/400?grayscale"
-              alt="Isbah Mehmood"
-              className="relative w-full h-full object-cover rounded-full border-4 border-slate-800 shadow-2xl"
-            />
+          <div className="relative w-80 h-80 md:w-96 md:h-96 mx-auto group">
+            {/* Soft glow effect around the image */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-accent to-purple-600 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity animate-pulse"></div>
+            
+            {/* The profile image container - strictly using the shared identity image */}
+            <div className="relative w-full h-full rounded-full border-4 border-slate-800 overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
+              <img
+                src="profile.jpg"
+                alt="Isbah Mehmood"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );

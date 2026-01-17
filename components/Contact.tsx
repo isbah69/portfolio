@@ -1,6 +1,10 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Linkedin, Github } from 'lucide-react';
+
+// Use any to bypass motion component type errors in this environment
+const MotionDiv = motion.div as any;
 
 const Contact: React.FC = () => {
   return (
@@ -16,7 +20,7 @@ const Contact: React.FC = () => {
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
-          <motion.div 
+          <MotionDiv 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -55,10 +59,10 @@ const Contact: React.FC = () => {
                  href="#"
               />
             </div>
-          </motion.div>
+          </MotionDiv>
 
           {/* Contact Form */}
-          <motion.div 
+          <MotionDiv 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -87,7 +91,7 @@ const Contact: React.FC = () => {
                 Send Message <Send size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </form>
-          </motion.div>
+          </MotionDiv>
         </div>
       </div>
     </section>
